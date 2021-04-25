@@ -111,11 +111,11 @@ public class Rtp {
         return timestampBytes;
     }
 
-//    private byte[] SSRC() {
-//        IntUtil.toHH()
-//    }
-//
-//    private byte[] CSRC() {
-//
-//    }
+    private byte[] SSRC() {
+        IntUtil.toHH()
+    }
+
+    private byte[] CSRC() {
+
+    }
 }
