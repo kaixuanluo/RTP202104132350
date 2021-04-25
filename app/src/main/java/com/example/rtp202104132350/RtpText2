@@ -1,0 +1,45 @@
+RTP包头前12个固定字节机构图：
+
+    0                   1                   2                   3
+
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   |V=2|P|X| CC   |M|     PT      |       sequence number         |
+
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   |                           timestamp                           |
+
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   |           synchronization source (SSRC) identifier            |
+
+   +=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+
+   |            contributing source (CSRC) identifiers             |
+
+   |                             ….                              |
+
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+V – Version. Identifies the RTP version.
+RTP版本号
+P – Padding. When set, the packet contains one or more additional padding octets at the end which are not part of the payload.
+是否填充，如果设置为允许填充的话，在包的末尾填充一个或多个字节，这些填充的字节不是有效负载的一部分。
+X – Extension bit. When set, the fixed header is followed by exactly one header extension, with a defined format.
+扩充位，如果设置为允许的话，固定头结构后面（即包的12个字节后面，有效负载的前面）紧跟着一个扩展头结构，该结构是已定义的一种格式
+CSRC count （CC） -Contains the number of CSRC identifiers that follow the fixed header.
+数据源的个数（即源的个数），如果只有一个源那么此时的值为0。
+M – Marker. The interpretation of the marker is defined by a profile. It is intended to allow significant events such as frame boundaries to be marked in the packet stream.
+标识，在文档中是这样定义的，它有意标识重要的事物比如：在流媒体中标识一帧数据的边界（结束或开始）。
+Payload type – Identifies the format of the RTP payload and determines its interpretation by the application. A profile specifies a default static mapping of payload type codes to payload formats. Additional payload type codes may be defined dynamically through non-RTP means.
+有效负载，RTP数据的有效负载（不包括头12个字节），由具体的应用程序来确定负载的格式和意义。官方文档里有表格说明，该表格显示了格式代码和具体格式的对应关系，附加的格式代码可能不在RTP协议里定义。
+Sequence number – Increments by one for each RTP data packet sent, and may be used by the receiver to detect packet loss and to restore packet sequence.
+数据包序号，发送的RTP数据包序号，接收端可用它来检查丢失的数据包和确定保存数据包次序。
+Timestamp – Reflects the sampling instant of the first octet in the RTP data packet. The sampling instant must be derived from a clock that increments monotonically and linearly in time to allow synchronization and jitter calculations.
+时间戳， 纪录了RTP数据包中第一个字节的采样时间，采样时间必须源自一个时间增量且允许同步和计算。
+SSRC – Synchronization source. This identifier is chosen randomly, with the intent that no two synchronization sources within the same RTP session will have the same SSRC identifier.
+同步标识， 是一个随机数，在同一个RTP会话中只有一个同步标识。
+CSRC – Contributing source identifiers list. Identifies the contributing sources for the payload contained in this packet.
